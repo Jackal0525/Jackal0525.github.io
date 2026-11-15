@@ -1,16 +1,833 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <!-- 0 秒后跳转到目标页面，将 url 替换为实际地址 -->
-    <meta http-equiv="refresh" content="3; url=https://baike.baidu.com/item/%E7%9F%B3%E5%A4%AA%E9%93%81%E8%B7%AF/7587426">
-    <title>即将跳转至正太...</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>碳中和小站 · 我的低碳行动方案</title>
+<style>
+  :root{
+    --bg:#f3faf6;
+    --card:#ffffff;
+    --ink:#0c2b21;
+    --muted:#5d7d70;
+    --line:#e0efe6;
+    --green-600:#16a34a;
+    --green-500:#22c55e;
+    --green-700:#15803d;
+    --teal:#0d9488;
+    --shadow:0 12px 34px -16px rgba(13,80,55,.28);
+    --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:80px;}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ 导航 ============ */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    backdrop-filter:blur(14px);
+    background:rgba(243,250,246,.82);
+    border-bottom:1px solid rgba(224,239,230,.9);
+  }
+  .nav-inner{
+    max-width:1120px;margin:0 auto;padding:0 24px;height:64px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{
+    font-weight:800;color:var(--ink);text-decoration:none;
+    display:flex;align-items:center;gap:8px;letter-spacing:-.01em;font-size:1rem;
+  }
+  .nav-links{display:flex;gap:6px;}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:600;
+    padding:8px 14px;border-radius:99px;transition:.2s;
+  }
+  .nav-links a:hover{background:#e6f7ed;color:var(--green-700);}
+
+  /* ============ Hero ============ */
+  .hero-wrap{position:relative;overflow:hidden;}
+  .hero-wrap::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(600px 400px at 22% 8%,rgba(34,197,94,.17),transparent 70%),
+      radial-gradient(700px 450px at 82% 0%,rgba(13,148,136,.15),transparent 70%);
+  }
+  .hero{
+    position:relative;max-width:960px;margin:0 auto;
+    padding:150px 24px 70px;text-align:center;
+  }
+  .hero h1{
+    font-size:clamp(2.3rem,7vw,4.4rem);
+    line-height:1.08;letter-spacing:-.03em;margin:0 0 20px;font-weight:900;
+  }
+  .grad{
+    background:linear-gradient(120deg,#22c55e,#0d9488);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .lead{
+    max-width:620px;margin:0 auto 34px;color:var(--muted);
+    font-size:clamp(1rem,2.2vw,1.1rem);
+  }
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 28px;border-radius:99px;font-weight:700;font-size:.98rem;
+    text-decoration:none;border:none;cursor:pointer;transition:.22s;font-family:inherit;
+  }
+  .btn.primary{
+    background:linear-gradient(135deg,#22c55e,#0d9488);color:#fff;
+    box-shadow:0 12px 26px -10px rgba(13,148,136,.6);
+  }
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(13,148,136,.7);}
+  .btn.ghost{background:#fff;color:var(--green-700);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--green-500);background:#f4fdf8;}
+  .btn.small{padding:10px 20px;font-size:.9rem;}
+
+  .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:56px;}
+  .stat{
+    background:rgba(255,255,255,.82);border:1px solid var(--line);
+    border-radius:16px;padding:16px 26px;min-width:150px;box-shadow:var(--shadow);
+  }
+  .stat b{display:block;font-size:1.7rem;color:var(--green-700);letter-spacing:-.02em;line-height:1.3;}
+  .stat b small{font-size:.85rem;font-weight:600;}
+  .stat span{font-size:.8rem;color:var(--muted);}
+
+  /* ============ 通用区块 ============ */
+  .section{max-width:1120px;margin:0 auto;padding:70px 24px;}
+  .section-head{margin-bottom:36px;max-width:660px;}
+  .eyebrow{
+    display:inline-block;font-size:.76rem;font-weight:800;letter-spacing:.14em;
+    color:var(--teal);background:#e7f7f4;padding:6px 14px;border-radius:99px;
+    margin-bottom:14px;text-transform:uppercase;
+  }
+  .section-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin:0 0 12px;letter-spacing:-.02em;}
+  .section-head p{color:var(--muted);margin:0;}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+
+  /* ============ 测算区 ============ */
+  .calc-grid{display:grid;grid-template-columns:1.35fr .95fr;gap:22px;align-items:start;}
+  .panel{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);
+  }
+  .field{margin-bottom:22px;}
+  .field:last-child{margin-bottom:0;}
+  .field-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:12px;}
+  .field-head label{font-weight:650;font-size:.95rem;}
+  .val{font-size:.84rem;color:var(--muted);white-space:nowrap;}
+  .val b{color:var(--green-700);font-size:1rem;font-variant-numeric:tabular-nums;}
+
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;
+    width:100%;height:6px;border-radius:99px;outline:none;cursor:pointer;
+    background:linear-gradient(to right,var(--green-500) var(--p,50%),#e8f3ec var(--p,50%));
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+    background:#fff;border:3px solid var(--green-600);
+    box-shadow:0 2px 8px rgba(22,163,74,.35);transition:transform .15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.12);}
+  input[type=range]::-moz-range-thumb{
+    width:16px;height:16px;border-radius:50%;background:#fff;
+    border:3px solid var(--green-600);box-shadow:0 2px 8px rgba(22,163,74,.35);
+  }
+
+  .chips{display:flex;gap:10px;flex-wrap:wrap;}
+  .chips label{position:relative;}
+  .chips input{position:absolute;opacity:0;width:0;height:0;}
+  .chips span{
+    display:inline-block;padding:9px 18px;border-radius:99px;
+    border:1.5px solid var(--line);font-size:.9rem;font-weight:600;
+    color:var(--muted);cursor:pointer;transition:.2s;background:#fff;
+  }
+  .chips span:hover{border-color:var(--green-500);}
+  .chips input:checked + span{
+    background:linear-gradient(135deg,#22c55e,#0d9488);
+    border-color:transparent;color:#fff;
+    box-shadow:0 8px 18px -8px rgba(13,148,136,.7);
+  }
+
+  /* 结果卡片 */
+  .result-card{
+    background:linear-gradient(170deg,#ffffff,#f2fdf7);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;box-shadow:var(--shadow);position:sticky;top:88px;
+  }
+  .big-num{display:flex;align-items:baseline;gap:8px;margin:6px 0 22px;}
+  .big-num b{
+    font-size:3rem;line-height:1;letter-spacing:-.04em;
+    color:var(--green-700);font-variant-numeric:tabular-nums;
+  }
+  .big-num small{color:var(--muted);font-size:.88rem;font-weight:600;}
+
+  .compare{position:relative;margin-bottom:8px;}
+  .compare-track{height:12px;border-radius:99px;background:#e8f3ec;overflow:hidden;}
+  .compare-track i{
+    display:block;height:100%;border-radius:99px;width:0;
+    background:linear-gradient(90deg,#22c55e,#0d9488);
+    transition:width .5s ease,background .3s;
+  }
+  .compare .mark{
+    position:absolute;top:-2px;height:16px;width:2px;
+    background:rgba(12,43,33,.26);border-radius:2px;
+  }
+  .compare-legend{
+    display:flex;justify-content:space-between;gap:6px;
+    font-size:.71rem;color:var(--muted);margin-top:6px;
+  }
+
+  .hint{
+    font-size:.87rem;color:var(--muted);background:#f0fdf4;
+    border-left:3px solid var(--green-500);padding:10px 14px;
+    border-radius:10px;margin:18px 0;line-height:1.6;
+  }
+
+  .breakdown{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
+  .bd-row{
+    display:grid;grid-template-columns:76px 1fr 60px;
+    align-items:center;gap:8px;font-size:.77rem;color:var(--muted);
+  }
+  .bd-bar{height:7px;border-radius:99px;background:#eaf4ee;overflow:hidden;}
+  .bd-bar i{
+    display:block;height:100%;border-radius:99px;width:0;
+    background:linear-gradient(90deg,#4ade80,#16a34a);transition:width .5s;
+  }
+  .bd-row b{
+    text-align:right;font-weight:700;color:var(--ink);
+    font-variant-numeric:tabular-nums;font-size:.77rem;
+  }
+
+  /* ============ 行动区 ============ */
+  .action-group{margin-bottom:34px;}
+  .group-title{
+    display:flex;align-items:center;gap:10px;
+    font-size:1.05rem;margin:0 0 16px;letter-spacing:-.01em;
+  }
+  .group-title span{font-size:1.2rem;}
+  .actions-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;
+  }
+  .action-card{
+    position:relative;text-align:left;font-family:inherit;
+    background:#fff;border:1.5px solid var(--line);border-radius:16px;
+    padding:18px 18px 16px;cursor:pointer;transition:.22s;
+    display:flex;flex-direction:column;gap:4px;color:var(--ink);
+  }
+  .action-card:hover{transform:translateY(-3px);border-color:#b6e8cb;box-shadow:var(--shadow);}
+  .action-card.on{
+    border-color:var(--green-500);
+    background:linear-gradient(160deg,#f1fdf6,#ffffff);
+    box-shadow:0 14px 30px -16px rgba(22,163,74,.65);
+  }
+  .check{
+    position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;
+    border:2px solid #d3e8dc;display:grid;place-items:center;transition:.2s;
+  }
+  .check::after{
+    content:"";width:8px;height:4px;
+    border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) scale(0);transition:.2s;margin-top:-2px;
+  }
+  .action-card.on .check{background:var(--green-600);border-color:var(--green-600);}
+  .action-card.on .check::after{transform:rotate(-45deg) scale(1);}
+  .ac-icon{font-size:1.4rem;line-height:1.2;}
+  .ac-title{font-weight:700;font-size:.94rem;padding-right:22px;}
+  .ac-desc{font-size:.79rem;color:var(--muted);line-height:1.5;}
+  .ac-kg{
+    margin-top:8px;font-size:.77rem;font-weight:800;color:var(--teal);
+    background:#e7f7f4;padding:3px 10px;border-radius:99px;align-self:flex-start;
+  }
+
+  .actions-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    flex-wrap:wrap;background:#fff;border:1px solid var(--line);
+    border-radius:16px;padding:16px 22px;box-shadow:var(--shadow);
+  }
+  .ab-info{font-size:.92rem;color:var(--muted);}
+  .ab-info b{color:var(--green-700);font-size:1.05rem;font-variant-numeric:tabular-nums;}
+
+  /* ============ 成绩单 ============ */
+  .dash{
+    display:flex;align-items:center;gap:46px;flex-wrap:wrap;
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:36px;box-shadow:var(--shadow);
+  }
+  .ring{
+    width:180px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+    background:conic-gradient(var(--green-500) calc(var(--p,0) * 1%),#e8f4ee 0);
+    transition:background .5s ease;flex-shrink:0;
+  }
+  .ring-inner{
+    width:74%;aspect-ratio:1;border-radius:50%;background:#fff;
+    display:grid;place-content:center;text-align:center;
+    box-shadow:inset 0 0 0 1px var(--line);
+  }
+  .ring-inner b{
+    font-size:1.9rem;letter-spacing:-.03em;color:var(--green-700);
+    line-height:1.1;font-variant-numeric:tabular-nums;
+  }
+  .ring-inner span{font-size:.72rem;color:var(--muted);}
+  .dash-cards{
+    display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));
+    gap:14px;flex:1;min-width:280px;
+  }
+  .mini{background:#f6fdf9;border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .mini span{display:block;font-size:.78rem;color:var(--muted);margin-bottom:6px;}
+  .mini b{
+    font-size:1.6rem;color:var(--green-700);letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;line-height:1.2;
+  }
+  .mini small{font-size:.72rem;color:var(--muted);margin-left:4px;}
+  .target-msg{
+    margin-top:20px;text-align:center;font-size:.94rem;color:var(--muted);
+    background:#f0fdf4;border:1px dashed #b6e8cb;padding:14px 20px;border-radius:14px;
+  }
+  .center-cta{text-align:center;margin-top:32px;}
+
+  /* ============ 弹窗 ============ */
+  .modal{
+    position:fixed;inset:0;background:rgba(8,32,24,.45);
+    backdrop-filter:blur(4px);display:grid;place-items:center;
+    padding:24px;z-index:200;opacity:0;pointer-events:none;transition:.25s;
+  }
+  .modal.show{opacity:1;pointer-events:auto;}
+  .modal-box{
+    background:#fff;border-radius:22px;padding:32px;
+    max-width:560px;width:100%;max-height:82vh;overflow-y:auto;
+    position:relative;transform:translateY(16px) scale(.98);transition:.28s;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,.4);
+  }
+  .modal.show .modal-box{transform:none;}
+  .modal-box h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.01em;}
+  .modal-box h4{margin:18px 0 8px;font-size:.95rem;}
+  .modal-box p{font-size:.92rem;color:var(--muted);margin:0 0 6px;}
+  .modal-box p b{color:var(--ink);}
+  .modal-close{
+    position:absolute;top:16px;right:16px;width:34px;height:34px;
+    border-radius:50%;border:none;background:#f1f7f3;color:var(--muted);
+    cursor:pointer;font-size:.9rem;transition:.2s;font-family:inherit;
+  }
+  .modal-close:hover{background:#e2efe7;color:var(--ink);}
+  .plan-list{
+    list-style:none;padding:0;margin:10px 0 18px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .plan-list li{
+    display:flex;justify-content:space-between;gap:12px;font-size:.89rem;
+    background:#f6fdf9;padding:10px 14px;border-radius:10px;border:1px solid var(--line);
+  }
+  .plan-list li span{color:var(--teal);font-weight:700;white-space:nowrap;}
+  .modal-actions{text-align:right;margin-top:22px;}
+
+  /* ============ 页脚 ============ */
+  .footer{
+    text-align:center;padding:48px 24px 64px;color:var(--muted);
+    font-size:.84rem;border-top:1px solid var(--line);margin-top:40px;
+  }
+  .footer strong{color:var(--green-700);}
+
+  @media (max-width:900px){
+    .calc-grid{grid-template-columns:1fr;}
+    .result-card{position:static;}
+  }
+  @media (max-width:640px){
+    .nav-links{display:none;}
+    .hero{padding-top:120px;}
+    .dash{padding:26px;gap:28px;justify-content:center;}
+    .dash-cards{grid-template-columns:1fr;}
+    .section{padding:52px 18px;}
+  }
+</style>
 </head>
 <body>
-    <!-- 可选：提示用户，若自动跳转失败可手动点击 -->
-    <p>3秒后页面将会跳转，若3秒后未响应请 <a href="https://baike.baidu.com/item/%E7%9F%B3%E5%A4%AA%E9%93%81%E8%B7%AF/7587426">点击此处</a>以观看正太。</p>
-    <p>DeepSeek真是太好用了！</p>
-    <p>如果不想观看正太，<a href="https://pan.baidu.com/s/1BvAx3KQA77D2Y7QWQ2QKnA?pwd=py5a">点击此处</a> 以退出
-    </p>
+
+<!-- ================= 导航 ================= -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top">🌍 碳中和小站</a>
+    <nav class="nav-links">
+      <a href="#calc">碳足迹测算</a>
+      <a href="#actions">低碳行动</a>
+      <a href="#result">减排成果</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= Hero ================= -->
+  <section class="hero-wrap">
+    <div class="hero">
+      <h1>一起<span class="grad">碳</span>索<br>零碳未来</h1>
+      <p class="lead">
+        从测算你的碳足迹开始，用一份可量化的低碳行动方案，
+        把每一天的小选择，变成地球的大改变。
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#calc">开始测算碳足迹</a>
+        <a class="btn ghost" href="#actions">查看行动清单</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>2030</b><span>碳达峰目标年</span></div>
+        <div class="stat"><b>2060</b><span>碳中和目标年</span></div>
+        <div class="stat"><b>2.3<small> 吨</small></b><span>1.5℃ 情景人均年排放</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 碳足迹测算 ================= -->
+  <section id="calc" class="section reveal">
+    <div class="section-head">
+      <span class="eyebrow">Step 01 · 碳足迹测算</span>
+      <h2>先看看你的碳足迹</h2>
+      <p>拖动滑块填写真实情况，系统会实时估算你的年度碳排放量（单位：CO₂e 二氧化碳当量）。</p>
+    </div>
+
+    <div class="calc-grid">
+      <!-- 输入面板 -->
+      <div class="panel">
+        <div class="field">
+          <div class="field-head">
+            <label for="elec">⚡ 每月家庭用电量</label>
+            <span class="val"><b id="elec-v">300</b> kWh</span>
+          </div>
+          <input type="range" id="elec" min="0" max="1200" step="10" value="300" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="gas">🔥 每月天然气用量</label>
+            <span class="val"><b id="gas-v">20</b> m³</span>
+          </div>
+          <input type="range" id="gas" min="0" max="100" step="1" value="20" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="car">🚗 每月私家车里程</label>
+            <span class="val"><b id="car-v">500</b> km</span>
+          </div>
+          <input type="range" id="car" min="0" max="3000" step="50" value="500" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="transit">🚌 每月公共交通里程</label>
+            <span class="val"><b id="transit-v">100</b> km</span>
+          </div>
+          <input type="range" id="transit" min="0" max="1200" step="20" value="100" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="flight">✈️ 每年飞行里程</label>
+            <span class="val"><b id="flight-v">2000</b> km</span>
+          </div>
+          <input type="range" id="flight" min="0" max="20000" step="500" value="2000" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="clothes">👕 每年新购衣物</label>
+            <span class="val"><b id="clothes-v">10</b> 件</span>
+          </div>
+          <input type="range" id="clothes" min="0" max="60" step="1" value="10" />
+        </div>
+
+        <div class="field">
+          <div class="field-head"><label>🍽️ 饮食结构</label></div>
+          <div class="chips">
+            <label><input type="radio" name="diet" value="meat" /><span>肉食为主</span></label>
+            <label><input type="radio" name="diet" value="balanced" checked /><span>荤素均衡</span></label>
+            <label><input type="radio" name="diet" value="veg" /><span>素食为主</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 实时结果 -->
+      <aside class="result-card">
+        <span class="eyebrow">你的年度碳足迹</span>
+        <div class="big-num"><b id="footNum">6.0</b><small>吨 CO₂e</small></div>
+
+        <div class="compare">
+          <div class="compare-track"><i id="compareFill"></i></div>
+          <span class="mark" style="left:19.2%"></span>
+          <span class="mark" style="left:39.2%"></span>
+          <span class="mark" style="left:66.7%"></span>
+          <div class="compare-legend">
+            <span>1.5℃ 2.3t</span><span>全球均值 4.7t</span><span>中国均值 8.0t</span>
+          </div>
+        </div>
+
+        <p class="hint" id="footHint"></p>
+        <div class="breakdown" id="breakdown"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= 低碳行动 ================= -->
+  <section id="actions" class="section reveal">
+    <div class="section-head">
+      <span class="eyebrow">Step 02 · 低碳行动</span>
+      <h2>挑选你能坚持的行动</h2>
+      <p>点击卡片加入你的方案，系统会实时计算这些行动能减少多少碳排放（减排量为年估算值）。</p>
+    </div>
+
+    <div id="actionGroups"></div>
+
+    <div class="actions-bar">
+      <div class="ab-info">
+        已选择 <b id="selCount">0</b> 项行动 · 预计年减排 <b id="selKg">0</b> kg CO₂e
+      </div>
+      <button class="btn ghost small" id="clearBtn">清空选择</button>
+    </div>
+  </section>
+
+  <!-- ================= 减排成果 ================= -->
+  <section id="result" class="section reveal">
+    <div class="section-head">
+      <span class="eyebrow">Step 03 · 减排成果</span>
+      <h2>你的低碳成绩单</h2>
+      <p>下面是你的行动方案预计带来的减排效果。</p>
+    </div>
+
+    <div class="dash">
+      <div class="ring" id="ring" style="--p:0">
+        <div class="ring-inner">
+          <b id="ringPct">0%</b>
+          <span>碳减排率</span>
+        </div>
+      </div>
+      <div class="dash-cards">
+        <div class="mini">
+          <span>预计年减排</span>
+          <b id="rSaved">0</b><small>kg CO₂e</small>
+        </div>
+        <div class="mini">
+          <span>减排后足迹</span>
+          <b id="rLeft">6.0</b><small>吨 CO₂e</small>
+        </div>
+        <div class="mini">
+          <span>相当于种树</span>
+          <b id="rTrees">0</b><small>棵 / 年</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="target-msg" id="targetMsg"></div>
+
+    <div class="center-cta">
+      <button class="btn primary" id="planBtn">生成我的低碳行动方案</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p><strong>碳中和 · 低碳行动方案</strong> —— 测算数据基于通用排放因子估算，仅供学习与参考。</p>
+  <p>每一个微小的选择，都在为 2060 碳中和目标投票 🌱</p>
+</footer>
+
+<!-- ================= 方案弹窗 ================= -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕</button>
+    <h3>🌱 我的低碳行动方案</h3>
+    <div id="planContent"></div>
+    <div class="modal-actions">
+      <button class="btn primary small" id="modalOk">好的，开始行动</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.prototype.slice.call(r.querySelectorAll(s));
+
+  /* ---------------- 排放因子 ---------------- */
+  const RANGE_IDS = ["elec", "gas", "car", "transit", "flight", "clothes"];
+  const DIET = { meat: 2500, balanced: 1800, veg: 1200 };
+  const LABELS = {
+    elec: "⚡ 用电",
+    gas: "🔥 燃气",
+    car: "🚗 私家车",
+    transit: "🚌 公交",
+    flight: "✈️ 飞行",
+    clothes: "👕 衣物",
+    diet: "🍽️ 饮食"
+  };
+
+  /* ---------------- 行动库 ---------------- */
+  const ACTIONS = [
+    // 出行
+    { cat: "出行", icon: "🚲", title: "每周少开一天车", desc: "以骑行、步行或公共交通替代私家车", kg: 220 },
+    { cat: "出行", icon: "🚌", title: "优先公共交通", desc: "通勤多坐地铁公交，少打车", kg: 300 },
+    { cat: "出行", icon: "🚶", title: "短途步行或骑行", desc: "3 公里内出行不开车", kg: 150 },
+    { cat: "出行", icon: "✈️", title: "减少一次长途飞行", desc: "用视频会议替代部分商务差旅", kg: 550 },
+    // 居家
+    { cat: "居家", icon: "❄️", title: "空调温度调高 1℃", desc: "夏季不低于 26℃，冬季不高于 20℃", kg: 120 },
+    { cat: "居家", icon: "💡", title: "全屋换成 LED 灯", desc: "比白炽灯省电约 80%", kg: 80 },
+    { cat: "居家", icon: "🔌", title: "拔掉待机电器插头", desc: "减少“待机能耗”的隐形浪费", kg: 50 },
+    { cat: "居家", icon: "🏷️", title: "选购一级能效家电", desc: "换新时优先选高能效产品", kg: 200 },
+    { cat: "居家", icon: "☀️", title: "安装太阳能热水器", desc: "利用可再生能源供热", kg: 400 },
+    // 饮食
+    { cat: "饮食", icon: "🥗", title: "每周一天素食", desc: "减少肉类消费带来的排放", kg: 230 },
+    { cat: "饮食", icon: "🍚", title: "践行光盘行动", desc: "按需备餐，减少食物浪费", kg: 160 },
+    { cat: "饮食", icon: "🥬", title: "优先本地当季食材", desc: "缩短食物运输里程", kg: 100 },
+    { cat: "饮食", icon: "🍱", title: "自带餐盒少外卖", desc: "减少一次性包装使用", kg: 60 },
+    // 消费
+    { cat: "消费", icon: "♻️", title: "二手交易延长寿命", desc: "闲置物品转卖或捐赠", kg: 220 },
+    { cat: "消费", icon: "🥤", title: "拒绝一次性用品", desc: "自带水杯、购物袋、餐具", kg: 70 },
+    { cat: "消费", icon: "👕", title: "精简衣物购买", desc: "少买快时尚，多穿经典款", kg: 90 },
+    { cat: "消费", icon: "📄", title: "电子账单无纸化", desc: "账单、发票、门票全面电子化", kg: 25 }
+  ];
+
+  const CAT_ICON = { 出行: "🚲", 居家: "🏠", 饮食: "🥗", 消费: "🛍️" };
+
+  /* ---------------- 工具函数 ---------------- */
+  function syncRange(r) {
+    const min = +r.min, max = +r.max, v = +r.value;
+    const p = max > min ? ((v - min) / (max - min)) * 100 : 0;
+    r.style.setProperty("--p", p + "%");
+  }
+
+  function colorFor(t) {
+    if (t <= 2300) return "linear-gradient(90deg,#22c55e,#0d9488)";
+    if (t <= 4700) return "linear-gradient(90deg,#4ade80,#22c55e)";
+    if (t <= 8000) return "linear-gradient(90deg,#fbbf24,#f59e0b)";
+    return "linear-gradient(90deg,#fb923c,#ef4444)";
+  }
+
+  function hintFor(t) {
+    if (t <= 2300) return "👏 低于 1.5℃ 人均目标线，你已经是低碳先锋！";
+    if (t <= 4700) return "🙂 接近全球人均水平，还有进步空间。";
+    if (t <= 8000) return "⚠️ 高于全球人均 4.7 吨，建议从出行与用电入手减排。";
+    return "🚨 明显高于中国平均 8 吨，减排潜力非常大！";
+  }
+
+  /* ---------------- 计算逻辑 ---------------- */
+  function compute() {
+    const v = {};
+    RANGE_IDS.forEach(function (id) { v[id] = +$("#" + id).value; });
+    v.diet = $('input[name="diet"]:checked').value;
+
+    const b = {
+      elec:    v.elec * 12 * 0.57,   // kWh → kg CO2e
+      gas:     v.gas * 12 * 2.16,    // m³
+      car:     v.car * 12 * 0.20,    // km
+      transit: v.transit * 12 * 0.05,
+      flight:  v.flight * 0.15,
+      clothes: v.clothes * 8,
+      diet:    DIET[v.diet]
+    };
+    const total = Object.keys(b).reduce(function (s, k) { return s + b[k]; }, 0);
+    return { b: b, total: total, v: v };
+  }
+
+  function selectedCards() { return $$(".action-card.on"); }
+
+  function selectedKg() {
+    return selectedCards().reduce(function (s, c) { return s + (+c.dataset.kg); }, 0);
+  }
+
+  /* ---------------- 渲染：行动卡片 ---------------- */
+  function renderActions() {
+    const cats = ["出行", "居家", "饮食", "消费"];
+    const wrap = $("#actionGroups");
+
+    wrap.innerHTML = cats.map(function (cat) {
+      const cards = ACTIONS.filter(function (a) { return a.cat === cat; }).map(function (a) {
+        return (
+          '<button type="button" class="action-card" ' +
+            'data-kg="' + a.kg + '" data-title="' + a.title + '" data-cat="' + a.cat + '">' +
+            '<span class="check"></span>' +
+            '<span class="ac-icon">' + a.icon + '</span>' +
+            '<span class="ac-title">' + a.title + '</span>' +
+            '<span class="ac-desc">' + a.desc + '</span>' +
+            '<span class="ac-kg">−' + a.kg + ' kg/年</span>' +
+          '</button>'
+        );
+      }).join("");
+
+      return (
+        '<div class="action-group">' +
+          '<h3 class="group-title"><span>' + CAT_ICON[cat] + '</span>' + cat + '减排</h3>' +
+          '<div class="actions-grid">' + cards + '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    wrap.addEventListener("click", function (e) {
+      const card = e.target.closest(".action-card");
+      if (!card) return;
+      card.classList.toggle("on");
+      updateAll();
+    });
+  }
+
+  /* ---------------- 渲染：全量更新 ---------------- */
+  function updateAll() {
+    const res = compute();
+    const b = res.b, total = res.total;
+
+    /* 1. 碳足迹卡片 */
+    $("#footNum").textContent = (total / 1000).toFixed(1);
+
+    const fill = $("#compareFill");
+    fill.style.width = Math.min(100, (total / 12000) * 100) + "%";
+    fill.style.background = colorFor(total);
+
+    $("#footHint").textContent = hintFor(total);
+
+    const maxV = Math.max.apply(null, Object.keys(b).map(function (k) { return b[k]; }).concat([1]));
+    $("#breakdown").innerHTML = Object.keys(LABELS).map(function (k) {
+      return (
+        '<div class="bd-row">' +
+          '<span>' + LABELS[k] + '</span>' +
+          '<div class="bd-bar"><i style="width:' + ((b[k] / maxV) * 100).toFixed(1) + '%"></i></div>' +
+          '<b>' + Math.round(b[k]) + 'kg</b>' +
+        '</div>'
+      );
+    }).join("");
+
+    /* 2. 行动选择汇总 */
+    const cards = selectedCards();
+    const saved = selectedKg();
+    $("#selCount").textContent = cards.length;
+    $("#selKg").textContent = saved.toLocaleString("zh-CN");
+
+    /* 3. 成绩单 */
+    const pct = total > 0 ? Math.min(100, (saved / total) * 100) : 0;
+    $("#ring").style.setProperty("--p", pct.toFixed(1));
+    $("#ringPct").textContent = Math.round(pct) + "%";
+    $("#rSaved").textContent = saved.toLocaleString("zh-CN");
+
+    const remain = Math.max(0, total - saved);
+    $("#rLeft").textContent = (remain / 1000).toFixed(1);
+    $("#rTrees").textContent = Math.round(saved / 20);
+
+    const tm = $("#targetMsg");
+    if (remain <= 2300) {
+      tm.textContent = "🎉 减排后你的足迹已低于 1.5℃ 人均目标线（2.3 吨），你已经是低碳生活的践行者！";
+    } else {
+      tm.textContent = "💪 距离 1.5℃ 人均目标线还需减少约 " +
+        Math.round(remain - 2300).toLocaleString("zh-CN") + " kg CO₂e，继续挑选更多行动吧。";
+    }
+  }
+
+  /* ---------------- 方案弹窗 ---------------- */
+  function openPlan() {
+    const res = compute();
+    const total = res.total;
+    const cards = selectedCards();
+    const saved = selectedKg();
+    const remain = Math.max(0, total - saved);
+    const pct = total > 0 ? Math.min(100, (saved / total) * 100) : 0;
+
+    let html = "";
+
+    if (cards.length === 0) {
+      html += '<p>你还没有选择任何行动哦。回到「低碳行动」区域，点击卡片即可加入你的方案。</p>';
+    } else {
+      html += "<p>当前年度碳足迹 <b>" + (total / 1000).toFixed(1) + " 吨</b>，" +
+              "你选择了 <b>" + cards.length + "</b> 项低碳行动，" +
+              "预计每年可减少 <b>" + saved.toLocaleString("zh-CN") + " kg CO₂e</b>，" +
+              "减排率约 <b>" + pct.toFixed(0) + "%</b>。</p>";
+
+      html += "<h4>我的行动清单</h4><ul class=\"plan-list\">";
+      cards.forEach(function (c) {
+        html += "<li><span style=\"flex:1;color:inherit;font-weight:600\">" +
+                c.querySelector(".ac-icon").textContent + " " + c.dataset.title +
+                "</span><span>−" + c.dataset.kg + " kg</span></li>";
+      });
+      html += "</ul>";
+
+      html += "<h4>减排后</h4><p>年度足迹约 <b>" + (remain / 1000).toFixed(1) +
+              " 吨 CO₂e</b>，相当于每年种下 <b>" + Math.round(saved / 20) + " 棵树</b>。</p>";
+
+      html += "<h4>下一步</h4><p>" + (remain <= 2300
+        ? "你已低于 1.5℃ 人均目标线，请坚持 21 天把它变成习惯，并带动身边的人一起行动。"
+        : "还差约 " + Math.round(remain - 2300) + " kg 达到 1.5℃ 人均目标线，建议再选择 2–3 项行动。") +
+        "</p>";
+    }
+
+    $("#planContent").innerHTML = html;
+    $("#modal").classList.add("show");
+  }
+
+  function closeModal() { $("#modal").classList.remove("show"); }
+
+  /* ---------------- 事件绑定 ---------------- */
+  function bind() {
+    RANGE_IDS.forEach(function (id) {
+      const r = $("#" + id);
+      const out = $("#" + id + "-v");
+      syncRange(r);
+      r.addEventListener("input", function () {
+        out.textContent = r.value;
+        syncRange(r);
+        updateAll();
+      });
+    });
+
+    $$('input[name="diet"]').forEach(function (r) {
+      r.addEventListener("change", updateAll);
+    });
+
+    $("#clearBtn").addEventListener("click", function () {
+      $$(".action-card.on").forEach(function (c) { c.classList.remove("on"); });
+      updateAll();
+    });
+
+    $("#planBtn").addEventListener("click", openPlan);
+    $("#modalClose").addEventListener("click", closeModal);
+    $("#modalOk").addEventListener("click", closeModal);
+    $("#modal").addEventListener("click", function (e) {
+      if (e.target === $("#modal")) closeModal();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeModal();
+    });
+  }
+
+  /* ---------------- 滚动渐入 ---------------- */
+  function initReveal() {
+    if (!("IntersectionObserver" in window)) {
+      $$(".reveal").forEach(function (el) { el.classList.add("visible"); });
+      return;
+    }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("visible");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    $$(".reveal").forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------------- 启动 ---------------- */
+  renderActions();
+  bind();
+  updateAll();
+  initReveal();
+})();
+</script>
 </body>
 </html>
