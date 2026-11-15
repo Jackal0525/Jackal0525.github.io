@@ -593,7 +593,6 @@
     { cat: "居家", icon: "🏷️", title: "选购一级能效家电", desc: "换新时优先选高能效产品", kg: 200 },
     { cat: "居家", icon: "☀️", title: "安装太阳能热水器", desc: "利用可再生能源供热", kg: 400 },
     // 饮食
-    { cat: "饮食", icon: "🥗", title: "每周一天素食", desc: "减少肉类消费带来的排放", kg: 230 },
     { cat: "饮食", icon: "🍚", title: "践行光盘行动", desc: "按需备餐，减少食物浪费", kg: 160 },
     { cat: "饮食", icon: "🥬", title: "优先本地当季食材", desc: "缩短食物运输里程", kg: 100 },
     { cat: "饮食", icon: "🍱", title: "自带餐盒少外卖", desc: "减少一次性包装使用", kg: 60 },
@@ -808,15 +807,12 @@
     const SUB   = "----------------------------------------------";
     const L = [];
 
-    L.push(LINE);
-    L.push("            我 的 低 碳 行 动 方 案");
-    L.push(LINE);
+    L.push("我 的 低 碳 行 动 方 案");
     L.push("生成时间：" + stampStr());
     L.push("");
 
     /* 一、碳足迹现状 */
     L.push("【一、碳足迹现状】");
-    L.push(SUB);
     L.push("  年度碳足迹：" + (total / 1000).toFixed(1) + " 吨 CO2e（" +
            Math.round(total).toLocaleString("zh-CN") + " kg）");
     L.push("  对标参考：1.5℃ 目标线 2.3 吨 / 全球人均 4.7 吨 / 中国均值 8.0 吨");
@@ -831,7 +827,6 @@
 
     /* 二、行动清单 */
     L.push("【二、我的低碳行动清单】");
-    L.push(SUB);
     if (cards.length === 0) {
       L.push("  （尚未选择任何行动，建议至少选择 2–3 项开始尝试）");
       L.push("");
@@ -855,7 +850,6 @@
 
     /* 三、减排成果 */
     L.push("【三、减排成果预估】");
-    L.push(SUB);
     L.push("  预计年减排量：" + saved.toLocaleString("zh-CN") + " kg CO2e（" +
            (saved / 1000).toFixed(2) + " 吨）");
     L.push("  碳减排率：" + pct.toFixed(1) + "%");
@@ -865,7 +859,6 @@
 
     /* 四、下一步建议 */
     L.push("【四、下一步建议】");
-    L.push(SUB);
     if (cards.length === 0) {
       L.push("  1. 先回到页面完成碳足迹测算，了解自己的排放结构；");
       L.push("  2. 从出行、居家、饮食、消费四个方向各挑 1 项易执行的行动；");
